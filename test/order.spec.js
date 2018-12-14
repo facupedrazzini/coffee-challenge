@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const Order = require('../lib/Order');
 const Coffee = require('../lib/Coffee');
-const coffees = require('../data/coffees.json');
+const data = require('./data.mock');
 const config = require('../lib/config.json');
 
 describe('Order', () => {
@@ -82,6 +82,23 @@ describe('Order', () => {
 			expect(order.items[0].price).to.be.equal(
 				3 + config.soyPrice + config.largePrice
 			);
+		});
+	});
+
+	describe('Total and GST', () => {
+		let order;
+		beforeEach(() => {
+			order = new Order();
+		});
+
+		it('should calculate total for example 1', () => {
+			order.add(data.coffees.espresso);
+			order.add(data.coffees.cappuccino, true);
+			order.add(data.coffees.flatWhite, false, true);
+			order.add(data.coffees.cappuccino);
+
+			expect(order.total()).to.equal(14.5);
+			expect(order.gst()).to.equal(1.45);
 		});
 	});
 });
