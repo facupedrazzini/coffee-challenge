@@ -1,0 +1,22 @@
+{
+	"ESPRESSO": {
+		"name": "Espresso",
+		"price": 3,
+		"canBeLarge": false
+	},
+	"CAPPUCCINO": {
+		"name": "Cappuccino",
+		"price": 3.5,
+		"canBeLarge": true
+	},
+	"LATTE": {
+		"name": "Latte",
+		"price": 3.5,
+		"canBeLarge": true
+	},
+	"FLAT_WHITE": {
+		"name": "Flat White",
+		"price": 3.5,
+		"canBeLarge": true
+	}
+}
