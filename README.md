@@ -1,7 +1,11 @@
 # Coffee Challenge
 
-## Test
+## Dependencies
 
--   `npm i`
+-   Node.js 11.4.0
+-   Npm 6.4.1
 
--   `npm test`
+## Run Tests
+
+1.  `npm i`
+2.  `npm test`
