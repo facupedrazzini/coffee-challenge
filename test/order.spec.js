@@ -24,7 +24,7 @@ describe('Order', () => {
 				canBeLarge: true
 			});
 
-			order.add(coffee);
+			order.add({ coffee });
 
 			expect(order.items[0].name.includes('Regular')).to.be.true;
 			expect(order.items.length).to.be.equal(1);
@@ -37,7 +37,7 @@ describe('Order', () => {
 				canBeLarge: true
 			});
 
-			order.add(coffee, true);
+			order.add({ coffee, isLarge: true });
 
 			expect(order.items[0].name.includes('Large')).to.be.true;
 			expect(order.items[0].price).to.be.equal(3 + config.largePrice);
@@ -50,7 +50,7 @@ describe('Order', () => {
 				canBeLarge: false
 			});
 
-			expect(() => order.add(coffee, true)).to.throw(
+			expect(() => order.add({ coffee, isLarge: true })).to.throw(
 				`${coffee.name} cannot be large`
 			);
 		});
@@ -62,7 +62,7 @@ describe('Order', () => {
 				canBeLarge: true
 			});
 
-			order.add(coffee, false, true);
+			order.add({ coffee, isLarge: false, hasSoy: true });
 
 			expect(order.items[0].name.includes('Soy')).to.be.true;
 			expect(order.items[0].price).to.be.equal(3 + config.soyPrice);
@@ -75,7 +75,7 @@ describe('Order', () => {
 				canBeLarge: true
 			});
 
-			order.add(coffee, true, true);
+			order.add({ coffee, isLarge: true, hasSoy: true });
 
 			expect(order.items[0].name.includes('Soy')).to.be.true;
 			expect(order.items[0].name.includes('Large')).to.be.true;
@@ -91,11 +91,15 @@ describe('Order', () => {
 			order = new Order();
 		});
 
-		it('should calculate total for example 1', () => {
-			order.add(data.coffees.espresso);
-			order.add(data.coffees.cappuccino, true);
-			order.add(data.coffees.flatWhite, false, true);
-			order.add(data.coffees.cappuccino);
+		it('should calculate total and gst for example', () => {
+			order.add({ coffee: data.coffees.espresso });
+			order.add({ coffee: data.coffees.cappuccino, isLarge: true });
+			order.add({
+				coffee: data.coffees.flatWhite,
+				isLarge: false,
+				hasSoy: true
+			});
+			order.add({ coffee: data.coffees.cappuccino });
 
 			expect(order.total()).to.equal(14.5);
 			expect(order.gst()).to.equal(1.45);
