@@ -91,7 +91,12 @@ describe('Order', () => {
 			order = new Order();
 		});
 
-		it('should calculate total and gst for example', () => {
+		it('should return 0 without items', () => {
+			expect(order.total()).to.equal(0);
+			expect(order.gst()).to.equal(0);
+		});
+
+		it('should calculate total and gst for example 1', () => {
 			order.add({ coffee: data.coffees.espresso });
 			order.add({ coffee: data.coffees.cappuccino, isLarge: true });
 			order.add({
@@ -103,6 +108,33 @@ describe('Order', () => {
 
 			expect(order.total()).to.equal(14.5);
 			expect(order.gst()).to.equal(1.45);
+		});
+	});
+
+	describe('Vouchers', () => {
+		let order;
+		beforeEach(() => {
+			order = new Order();
+		});
+
+		it('should calculate total and gst for example 2', () => {
+			order.add({ coffee: data.coffees.cappuccino, isLarge: true });
+			order.add({ coffee: data.coffees.flatWhite, hasSoy: true });
+
+			order.addVoucher(data.vouchers.discountVoucher);
+
+			expect(order.total()).to.equal(7.2);
+			expect(order.gst()).to.equal(0.72);
+		});
+
+		it('should calculate total and gst for example 3', () => {
+			order.add({ coffee: data.coffees.cappuccino, isLarge: true });
+			order.add({ coffee: data.coffees.flatWhite });
+
+			order.addVoucher(data.vouchers.oneFreeVoucher);
+
+			expect(order.total()).to.equal(4);
+			expect(order.gst()).to.equal(0.4);
 		});
 	});
 });
